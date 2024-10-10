@@ -31,6 +31,18 @@ class ProdutosControllerWeb extends Controller
     }
 
     public function CadastrarEvoltarParaListagem(Request $request){
+        if($request['valor'] > 99999999.99){
+            return view('produtos.cadastro',[
+                'message' => "valor muito alto (maior que 99999999.99)"
+            ]);
+        }
+
+        if($request['valor'] < 0){
+            return view('produtos.cadastro',[
+                'message' => "proibido valores negativos"
+            ]);
+        }
+
         $produto = [
             "nome" => $request["nome"],
             "valor" => $request['valor'],
@@ -43,6 +55,9 @@ class ProdutosControllerWeb extends Controller
     }
 
     public function OpenCadastroPage(){
-        return view('produtos.cadastro');
+        $message = "";
+        return view('produtos.cadastro',[
+            'message' => $message,
+        ]);
     }
 }

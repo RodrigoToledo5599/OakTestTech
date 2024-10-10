@@ -24,6 +24,7 @@
                     <div class="mb-4">
                         <label for="valor" class="form-label">Valor do Produto</label>
                         <input type="number" class="form-control" id="valor" step="0.01" pattern="\$[0-9]+\.[0-9]{2}" name="valor" required>
+                        <p style="color:red">{{$message}}</p>
                     </div>
                     <div class="mb-4">
                         <label for="disponivel" class="form-label">Disponível para Venda</label>
