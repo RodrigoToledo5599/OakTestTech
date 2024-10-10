@@ -55,9 +55,8 @@ class ProdutosControllerWeb extends Controller
     }
 
     public function OpenCadastroPage(){
-        $message = "";
         return view('produtos.cadastro',[
-            'message' => $message,
+            'message' => '',
         ]);
     }
 }
