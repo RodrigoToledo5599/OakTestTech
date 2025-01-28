@@ -21,29 +21,36 @@ RUN apt-get update && \
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql zip
 
+RUN echo "EnableSendfile Off" >> /etc/apache2/apache2.conf
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copy the application code
 COPY . /var/www/html
 
-# Set the working directory
 WORKDIR /var/www/html
 
-
-# Install composer
-# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install project dependencies
+# RUN composer require livewire/livewire
+# RUN php artisan livewire:publish --config
+# RUN composer require laravel/reverb
+# RUN php artisan reverb:install
+# RUN composer require pusher/pusher-php-server
+# RUN composer require laravel/tinker
+# RUN php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
 RUN composer install
+# RUN php artisan key:generate
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 8000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0"]
+# COPY --from=builder /app/public/build /var/www/html/public/build 
+
+# EXPOSE 8000
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0"]
 
 

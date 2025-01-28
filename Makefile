@@ -1,5 +1,6 @@
 setup:
-	@make build
+	# @make build
+	# @make create-network
 	@make up 
 	@make composer-update
 	@make install-dependencies
@@ -10,6 +11,12 @@ build:
 
 up:
 	docker-compose up -d
+
+create-network:
+	docker network create oaktechtest-net
+
+app-run:
+	docker-compose exec app php artisan serve --host 0.0.0.0 --port 8000
 
 composer-update:
 	docker exec app composer update
